@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Mural de Memórias</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1>Nosso Amor ❤️</h1>
+        <div id="counter">
+            <p>Estamos juntos há:</p>
+            <div id="timer">Carregando tempo...</div>
+        </div>
+    </header>
+
+    <main>
+        <section id="add-moment">
+            <h2>Adicionar Novo Momento</h2>
+            <form id="moment-form">
+                <input type="text" id="title" placeholder="Título do momento" required>
+                <input type="date" id="date" required>
+                <textarea id="description" placeholder="Conte um pouco sobre esse dia..." required></textarea>
+                
+                <label for="image-input" class="file-label">Escolher foto do dispositivo</label>
+                <input type="file" id="image-input" accept="image/*">
+                
+                <button type="submit">Guardar Memória</button>
+            </form>
+        </section>
+
+        <section id="gallery">
+            <h2>Nossa Linha do Tempo</h2>
+            <div id="moments-container"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Feito com ❤️ para nós dois</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
