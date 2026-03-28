@@ -1,105 +1,109 @@
-/* ... (mantenha o CSS anterior e adicione/ajuste isso) ... */
-
 :root {
-    --primary-color: #ff4d6d;
-    --secondary-color: #ff8fa3;
-    --bg-color: #fff0f3;
-    --text-color: #590d22;
+    --romantic-red: #ff4d6d;
+    --soft-pink: #fff0f3;
+    --dark-pink: #800f2f;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
+    background-color: var(--soft-pink);
+    color: var(--dark-pink);
+    margin: 0;
 }
 
 header {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--romantic-red), #ff758f);
     color: white;
     text-align: center;
-    padding: 3rem 1rem;
-    border-bottom-left-radius: 50% 20px;
-    border-bottom-right-radius: 50% 20px;
+    padding: 50px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; }
+h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; margin: 0; }
 
-#timer {
-    font-size: 1.2rem;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.2);
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 50px;
-    margin-top: 10px;
-}
+#timer { font-size: 1.1rem; margin-top: 10px; font-weight: 300; }
 
-main { max-width: 900px; margin: 20px auto; padding: 20px; }
+main { max-width: 1000px; margin: -30px auto 50px; padding: 0 20px; }
 
 #add-moment {
     background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 40px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-form { display: flex; flex-direction: column; gap: 15px; }
+form { display: grid; gap: 15px; }
 
 input, textarea {
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-}
-
-/* Estilização do botão de arquivo */
-input[type="file"] {
-    display: none;
+    border: 1px solid #ffccd5;
+    border-radius: 10px;
+    font-size: 1rem;
 }
 
 .file-label {
-    background: #f8f9fa;
-    border: 2px dashed var(--secondary-color);
+    background: #ffccd5;
     padding: 15px;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    color: var(--primary-color);
     font-weight: 600;
+    transition: 0.3s;
 }
 
+.file-label:hover { background: #ffb3c1; }
+input[type="file"] { display: none; }
+
 button {
-    background-color: var(--primary-color);
+    background: var(--romantic-red);
     color: white;
     border: none;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 600;
+    font-size: 1rem;
+}
+
+.divider {
+    text-align: center;
+    margin: 40px 0;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
 }
 
 #moments-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 25px;
 }
 
 .card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
 }
+
+.card:hover { transform: scale(1.02); }
 
 .card img {
     width: 100%;
-    height: 250px;
+    height: 280px;
     object-fit: cover;
 }
 
-.card-content { padding: 15px; }
-.card-date { font-size: 0.8rem; color: var(--secondary-color); }
+.card-info { padding: 15px; }
+.card-date { font-size: 0.8rem; color: #ff758f; font-weight: 600; }
+.card-info h3 { margin: 5px 0; font-size: 1.2rem; }
+.btn-delete {
+    background: none;
+    border: none;
+    color: #ff4d6d;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0;
+    margin-top: 10px;
+    text-decoration: underline;
+}
