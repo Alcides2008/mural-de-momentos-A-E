@@ -1,5 +1,5 @@
 // --- CONFIGURAÇÃO DA DATA ---
-const dataInicio = new Date(2023, 5, 12); // Ano, Mês-1, Dia
+const dataInicio = new Date(2025, 11, 18); // Ano, Mês-1, Dia
 
 // --- BANCO DE DADOS (IndexedDB) ---
 let db;
