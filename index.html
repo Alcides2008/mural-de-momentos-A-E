@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Mural de Memórias</title>
+    <title>Nosso Álbum Infinito</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -11,36 +11,30 @@
 
     <header>
         <h1>Nosso Amor ❤️</h1>
-        <div id="counter">
-            <p>Estamos juntos há:</p>
-            <div id="timer">Carregando tempo...</div>
-        </div>
+        <div id="timer">Contando cada segundo...</div>
     </header>
 
     <main>
         <section id="add-moment">
-            <h2>Adicionar Novo Momento</h2>
+            <h2>Novo Momento</h2>
             <form id="moment-form">
-                <input type="text" id="title" placeholder="Título do momento" required>
+                <input type="text" id="title" placeholder="O que aconteceu?" required>
                 <input type="date" id="date" required>
-                <textarea id="description" placeholder="Conte um pouco sobre esse dia..." required></textarea>
+                <textarea id="description" placeholder="Escreva uma legenda..."></textarea>
                 
-                <label for="image-input" class="file-label">Escolher foto do dispositivo</label>
-                <input type="file" id="image-input" accept="image/*">
+                <label for="image-input" class="file-label">📸 Selecionar Foto</label>
+                <input type="file" id="image-input" accept="image/*" required>
                 
-                <button type="submit">Guardar Memória</button>
+                <button type="submit">Guardar para Sempre</button>
             </form>
         </section>
 
+        <div class="divider">✨ Nossas Memórias ✨</div>
+
         <section id="gallery">
-            <h2>Nossa Linha do Tempo</h2>
             <div id="moments-container"></div>
         </section>
     </main>
-
-    <footer>
-        <p>Feito com ❤️ para nós dois</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
