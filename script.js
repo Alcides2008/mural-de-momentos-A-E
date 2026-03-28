@@ -24,7 +24,7 @@ function atualizarContador() {
     const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
     const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const minutos = Math.floor((diff / 1000 / 60) % 60);
-    document.getElementById('timer').innerText = `Juntos há ${dias} dias, ${horas}h e ${minutos}m`;
+    document.getElementById('timer').innerText = `Juntos há ${dias} dias, ${horas}h e ${minutos}m ${seconds}s`;
 }
 setInterval(atualizarContador, 1000);
 atualizarContador();
