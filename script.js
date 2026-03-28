@@ -1,80 +1,101 @@
-// 1. Configuração da Data (Ano, Mês-1, Dia)
-const startDate = new Date(2025, 11, 18); 
+// --- CONFIGURAÇÃO DA DATA ---
+const dataInicio = new Date(2023, 5, 12); // Ano, Mês-1, Dia
 
-function updateTimer() {
-    const now = new Date();
-    const diff = now - startDate;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    document.getElementById('timer').innerHTML = `${days} dias, ${hours}h ${minutes}m ${seconds}s`;
+// --- BANCO DE DADOS (IndexedDB) ---
+let db;
+const request = indexedDB.open("AlbumAmorDB", 1);
+
+request.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("momentos")) {
+        db.createObjectStore("momentos", { keyPath: "id", autoIncrement: true });
+    }
+};
+
+request.onsuccess = (e) => {
+    db = e.target.result;
+    mostrarMomentos();
+};
+
+// --- CONTADOR DE TEMPO ---
+function atualizarContador() {
+    const agora = new Date();
+    const diff = agora - dataInicio;
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diff / 1000 / 60) % 60);
+    document.getElementById('timer').innerText = `Juntos há ${dias} dias, ${horas}h e ${minutos}m`;
 }
-setInterval(updateTimer, 1000);
-updateTimer();
+setInterval(atualizarContador, 1000);
+atualizarContador();
 
-// 2. Lógica de Upload e Armazenamento
-const momentForm = document.getElementById('moment-form');
-const momentsContainer = document.getElementById('moments-container');
-let moments = JSON.parse(localStorage.getItem('nosso_mural')) || [];
-
-function displayMoments() {
-    momentsContainer.innerHTML = '';
-    moments.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    moments.forEach((m, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <img src="${m.image}" alt="Momento">
-            <div class="card-content">
-                <p class="card-date">${new Date(m.date).toLocaleDateString('pt-BR')}</p>
-                <h3>${m.title}</h3>
-                <p>${m.description}</p>
-                <button onclick="deleteMoment(${index})" style="background:none; color:red; padding:0; margin-top:10px; font-size:0.8rem; width:auto; cursor:pointer;">Apagar</button>
-            </div>
-        `;
-        momentsContainer.appendChild(card);
-    });
-}
-
-momentForm.addEventListener('submit', function(e) {
+// --- SALVAR MOMENTO ---
+document.getElementById('moment-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const fileInput = document.getElementById('image-input');
-    const file = fileInput.files[0];
+    const file = document.getElementById('image-input').files[0];
+    const reader = new FileReader();
 
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = function(event) {
-            const base64Image = event.target.result;
-            
-            const newMoment = {
-                title: document.getElementById('title').value,
-                date: document.getElementById('date').value,
-                description: document.getElementById('description').value,
-                image: base64Image
-            };
-
-            moments.push(newMoment);
-            localStorage.setItem('nosso_mural', JSON.stringify(moments));
-            displayMoments();
-            momentForm.reset();
+    reader.onload = function(event) {
+        const novoMomento = {
+            titulo: document.getElementById('title').value,
+            data: document.getElementById('date').value,
+            descricao: document.getElementById('description').value,
+            foto: event.target.result // Base64 da imagem
         };
 
-        reader.readAsDataURL(file); // Converte imagem para texto
-    } else {
-        alert("Por favor, selecione uma foto!");
+        const transaction = db.transaction(["momentos"], "readwrite");
+        const store = transaction.objectStore("momentos");
+        store.add(novoMomento);
+
+        transaction.oncomplete = () => {
+            document.getElementById('moment-form').reset();
+            mostrarMomentos();
+        };
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
     }
 });
 
-function deleteMoment(index) {
-    if(confirm("Deseja apagar essa memória?")) {
-        moments.splice(index, 1);
-        localStorage.setItem('nosso_mural', JSON.stringify(moments));
-        displayMoments();
-    }
+// --- MOSTRAR MOMENTOS ---
+function mostrarMomentos() {
+    const container = document.getElementById('moments-container');
+    container.innerHTML = "";
+
+    const transaction = db.transaction(["momentos"], "readonly");
+    const store = transaction.objectStore("momentos");
+    const requestAll = store.getAll();
+
+    requestAll.onsuccess = () => {
+        const momentos = requestAll.result;
+        // Ordenar por data (mais recente primeiro)
+        momentos.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+        momentos.forEach(m => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${m.foto}">
+                <div class="card-info">
+                    <span class="card-date">${new Date(m.data).toLocaleDateString('pt-BR')}</span>
+                    <h3>${m.titulo}</h3>
+                    <p>${m.descricao}</p>
+                    <button class="btn-delete" onclick="deletarMomento(${m.id})">Remover memória</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    };
 }
 
-displayMoments();
+// --- DELETAR MOMENTO ---
+function deletarMomento(id) {
+    if (confirm("Deseja apagar essa lembrança?")) {
+        const transaction = db.transaction(["momentos"], "readwrite");
+        const store = transaction.objectStore("momentos");
+        store.delete(id);
+        transaction.oncomplete = () => mostrarMomentos();
+    }
+}
